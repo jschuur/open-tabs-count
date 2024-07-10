@@ -1,0 +1,22 @@
+NODE mv_average_tabcount_15mins_0
+SQL >
+
+    SELECT
+        toStartOfInterval(timestamp, toIntervalMinute(15)) AS intervalStart,
+        userEmail,
+        instanceId,
+        avgState(count) AS averageCount
+    FROM tabcount
+    GROUP BY
+        intervalStart,
+        userEmail,
+        instanceId
+    ORDER BY
+        intervalStart ASC,
+        userEmail ASC,
+        instanceId ASC
+
+TYPE materialized
+DATASOURCE average_tabcount_15mins_mv
+
+

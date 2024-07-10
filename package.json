@@ -1,0 +1,30 @@
+{
+  "name": "open-tabs-count",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "dotenv -e .env -- node esbuild.config.js && npm run copy-files",
+    "copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.json public/* dist/",
+    "check": "tsc --noEmit",
+    "tb:pull:force": "tb pull --folder tinybird --force"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.14.10",
+    "@types/pluralize": "^0.0.33",
+    "@types/uuid": "^10.0.0",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@chronark/zod-bird": "^0.3.9",
+    "pluralize": "^8.0.0",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
+  }
+}

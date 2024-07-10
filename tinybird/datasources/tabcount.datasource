@@ -1,0 +1,13 @@
+
+SCHEMA >
+    `count` Int16 `json:$.count`,
+    `id` String `json:$.id`,
+    `instanceId` String `json:$.instanceId`,
+    `timestamp` DateTime64(3) `json:$.timestamp`,
+    `trigger` String `json:$.trigger`,
+    `userEmail` String `json:$.userEmail`,
+    `userId` String `json:$.userId`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYear(timestamp)"
+ENGINE_SORTING_KEY "timestamp, trigger, userEmail, userId"

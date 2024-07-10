@@ -1,0 +1,26 @@
+TOKEN "dashboard_api" READ
+
+NODE api_avg_tabcount_0
+SQL >
+
+    %
+
+    SELECT 
+      intervalStart,
+    {% if defined(userEmail) %}
+      userEmail,
+    {% end %}
+      avgMerge(averageCount) AS averageCount
+    FROM average_tabcount_15mins_mv
+    WHERE
+      intervalStart >= now() - INTERVAL 7 DAY AND intervalStart < now()
+    {% if defined(userEmail) %}
+      AND userEmail={{String(userEmail)}}
+    {% end %}
+    GROUP BY intervalStart
+    {% if defined(userEmail) %}
+      , userEmail
+    {% end %}
+    ORDER BY intervalStart
+
+
