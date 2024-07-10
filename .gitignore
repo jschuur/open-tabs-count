@@ -2,4 +2,6 @@ tmp
 node_modules
 dist
 .tinyb
-*.env
+*.env*
+!.env.example
+.turbo

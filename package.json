@@ -1,30 +1,18 @@
 {
   "name": "open-tabs-count",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Chrome extension and site to keep track of your open browser tabs over time",
+  "private": true,
   "scripts": {
-    "build": "dotenv -e .env -- node esbuild.config.js && npm run copy-files",
-    "copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.json public/* dist/",
-    "check": "tsc --noEmit",
-    "tb:pull:force": "tb pull --folder tinybird --force"
+    "dev": "turbo dev --parallel",
+    "build": "turbo build",
+    "lint": "turbo lint"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@9.5.0",
   "devDependencies": {
-    "@types/chrome": "^0.0.268",
-    "@types/node": "^20.14.10",
-    "@types/pluralize": "^0.0.33",
-    "@types/uuid": "^10.0.0",
-    "copyfiles": "^2.4.1",
-    "esbuild": "^0.23.0",
-    "typescript": "^5.5.3"
-  },
-  "dependencies": {
-    "@chronark/zod-bird": "^0.3.9",
-    "pluralize": "^8.0.0",
-    "uuid": "^10.0.0",
-    "zod": "^3.23.8"
+    "turbo": "^2.0.6"
   }
 }

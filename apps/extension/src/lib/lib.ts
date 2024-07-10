@@ -2,10 +2,11 @@ import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
 
 import { addTabCount } from '@/lib/tinybird';
+import { debug } from '@/lib/utils';
 
 import { UpdateTrigger } from '@/types';
 
-const CHECK_INTERVAL_MINUTES = 60;
+const CRON_INTERVAL_MINUTES = 60;
 
 function getProfileUserInfo(): Promise<chrome.identity.UserInfo> {
   return new Promise((resolve) => {
@@ -61,27 +62,31 @@ export async function updateTabCount(trigger: UpdateTrigger) {
       )}`,
     });
 
-    console.log('Tab count sent to Tinybird', { data, res });
+    debug('Tab count sent to Tinybird', { data, res });
   } catch (err) {
     console.error('Error updating tab count', err);
   }
 }
 
 export function addEventListeners() {
-  chrome.alarms.create('countTabs', { periodInMinutes: CHECK_INTERVAL_MINUTES });
+  chrome.alarms.create('countTabs', { periodInMinutes: CRON_INTERVAL_MINUTES });
 
-  chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.local.get(['instanceId'], function (result) {
+  chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.get(['instanceId'], (result) => {
       if (!result.instanceId) {
         const instanceId = uuidv4();
 
         chrome.storage.local.set({ instanceId }, () => {
-          console.log('Instance ID is set to ' + instanceId);
+          debug('Instance ID is set to ' + instanceId);
         });
       } else {
-        console.log('Existing Instance ID: ' + result.instanceId);
+        debug('Existing Instance ID: ' + result.instanceId);
       }
     });
+  });
+
+  chrome.runtime.onStartup.addListener(() => {
+    debug('Open Tabs Count Extension started');
   });
 
   chrome.alarms.onAlarm.addListener(async (alarm) => {
@@ -89,16 +94,18 @@ export function addEventListeners() {
   });
 
   chrome.tabs.onCreated.addListener(async (tab: chrome.tabs.Tab) => {
-    console.log(`New tab created with id ${tab.id}`);
+    debug(`New tab created with id ${tab.id}`);
 
     await updateTabCount('tabCreated');
   });
 
   chrome.tabs.onRemoved.addListener(
     async (tabId: number, removeInfo: chrome.tabs.TabRemoveInfo) => {
-      console.log(`Tab with id ${tabId} was closed`, { removeInfo });
+      debug(`Tab with id ${tabId} was closed`, { removeInfo });
 
       await updateTabCount('tabRemoved');
     }
   );
+
+  debug('Event listeners added');
 }

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Open Tab Count",
+  "name": "Open Tabs Count",
   "version": "1.0",
   "description": "Track how many tabs you have open over time",
   "permissions": [
@@ -11,14 +11,10 @@
     "identity.email"
   ],
   "host_permissions": [
-    "https://api.tinybird.co/*",
-    "https://api.us-east.tinybird.co/*",
-    "https://api.eu-central-1.aws.tinybird.co/*",
-    "https://api.us-east.aws.tinybird.co/*",
-    "https://api.us-west-2.aws.tinybird.co/*"
+    "https://api.us-east.aws.tinybird.co/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "action": {
     "default_popup": "popup.html"
