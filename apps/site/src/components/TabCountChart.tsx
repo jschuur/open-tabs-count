@@ -21,11 +21,7 @@ import { TabCountDataInterval } from '@/lib/tinybird';
 
 const chartConfig = {
   averageCount: {
-    label: 'Average open',
-    color: 'hsl(var(--chart-1))',
-  },
-  intervalStart: {
-    label: 'Interval',
+    label: 'Average tabs',
     color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
@@ -34,6 +30,9 @@ type Props = {
   chartData: any;
 };
 export default function TabCountChart({ chartData }: Props) {
+  chartData.forEach((interval: TabCountDataInterval) => {
+    interval.averageCount = Math.round(interval.averageCount);
+  });
   const countValues = chartData.map((d: TabCountDataInterval) => d.averageCount);
   const maxCount = Math.round(Math.max(...countValues));
   const minCount = Math.round(Math.min(...countValues));
@@ -65,17 +64,18 @@ export default function TabCountChart({ chartData }: Props) {
               content={
                 <ChartTooltipContent
                   indicator='line'
-                  className='w-[180px]'
+                  className='w-[160x]'
                   nameKey='averageCount'
-                  labelKey='intervalStart'
-                  // labelFormatter={(value) => {
-                  //   console.log(value);
-                  //   return new Date(value).toLocaleDateString('en-US', {
-                  //     month: 'short',
-                  //     day: 'numeric',
-                  //     year: 'numeric',
-                  //   });
-                  // }}
+                  labelFormatter={(label, payload) => {
+                    return new Date(payload[0].payload.intervalStart).toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true,
+                    });
+                  }}
                 />
               }
             />
