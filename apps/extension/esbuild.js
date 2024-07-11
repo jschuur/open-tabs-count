@@ -36,6 +36,7 @@ const buildOptions = {
     'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
     'process.env.TINYBIRD_TOKEN': `"${process.env.TINYBIRD_TOKEN}"`,
     'process.env.TINYBIRD_BASE_URL': `"${process.env.TINYBIRD_BASE_URL}"`,
+    'process.env.SITE_URL': `"${process.env.SITE_URL}"`,
   },
   alias: {
     '@': './src',

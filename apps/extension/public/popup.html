@@ -4,17 +4,23 @@
     <title>Open Tabs</title>
     <style>
       body {
-        width: 200px;
+        padding: 2px 4px;
+        /* width: 100px; */
+        font-size: 1.1rem;
         text-align: center;
-      }
-      h2 {
-        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        width: max-content;
+        white-space: nowrap;
+        gap: 16px;
+        /* font-weight: 300; */
+        /* color: rgba(0, 0, 0, 0.5); */
       }
     </style>
   </head>
   <body>
-    <h2>Open Tabs / Windows</h2>
-    <p id="openTabs"></p>
+    <div id="counts"></div>
+    <div id="site"><a target="_blank" href="">site</a></div>
     <script src="src/popup.js"></script>
   </body>
 </html>

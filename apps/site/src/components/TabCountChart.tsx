@@ -1,21 +1,17 @@
 'use client';
+import pluralize from 'pluralize';
 
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+
+import { shortEnglishHumanizer } from '@/lib/utils';
 
 import { TabCountDataInterval } from '@/lib/tinybird';
 
@@ -33,19 +29,28 @@ export default function TabCountChart({ chartData }: Props) {
   chartData.forEach((interval: TabCountDataInterval) => {
     interval.averageCount = Math.round(interval.averageCount);
   });
-  const countValues = chartData.map((d: TabCountDataInterval) => d.averageCount);
-  const maxCount = Math.round(Math.max(...countValues));
-  const minCount = Math.round(Math.min(...countValues));
+  const currentTabs = chartData[chartData.length - 1];
 
   return (
     <Card className='md:w-3/4 mx-4 mt-4'>
       <CardHeader>
-        <CardTitle className='leading-8'>
-          How many Chrome tabs does Joost have open right now?
-        </CardTitle>
-        <CardDescription>
-          Range: {maxCount} - {minCount}. He needs them all, they&apos;re all important!
-        </CardDescription>
+        <div className='flex justify-between items-start gap-16'>
+          <CardTitle className='leading-8 font-medium text-lg md:text-2xl text-balance'>
+            How many Chrome tabs does Joost have open right now?
+          </CardTitle>
+          <div className='px-4 py-2 text-lg md:text-2xl font-medium whitespace-nowrap bg-green-100 rounded border border-green-200'>
+            <div>{pluralize('tab', currentTabs.averageCount, true)}</div>
+            <div className='text-muted-foreground text-sm whitespace-nowrap'>
+              {shortEnglishHumanizer(new Date().getTime() - currentTabs.intervalStart, {
+                units: ['d', 'h', 'm'],
+                conjunction: ' and ',
+                round: true,
+                largest: 2,
+              })}{' '}
+              ago
+            </div>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer className='max-h-80 w-full' config={chartConfig}>
@@ -53,8 +58,6 @@ export default function TabCountChart({ chartData }: Props) {
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey='intervalStart'
-              // tickLine={false}
-              // axisLine={false}
               tickMargin={8}
               scale={'time'}
               tickFormatter={(value) => new Date(value).toLocaleTimeString()}
