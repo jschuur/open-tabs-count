@@ -11,7 +11,12 @@ export default $config({
     };
   },
   async run() {
-    const config: sst.aws.NextjsArgs = {};
+    const config: sst.aws.NextjsArgs = {
+      environment: {
+        TINYBIRD_TOKEN_DASHBOARD: process.env.TINYBIRD_TOKEN_DASHBOARD ?? '',
+        TINYBIRD_BASE_URL: process.env.TINYBIRD_BASE_URL ?? '',
+      },
+    };
 
     if (!$dev) {
       if (process.env.SITE_HOSTNAME) {

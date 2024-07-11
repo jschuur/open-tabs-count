@@ -2,6 +2,8 @@ import TabCountChart from '@/components/TabCountChart';
 
 import { getTabCounts } from '@/lib/tinybird';
 
+export const revalidate = 900;
+
 export default async function Home() {
   const { data: chartData } = await getTabCounts({ userEmail: 'jschuur@jschuur.com' });
 

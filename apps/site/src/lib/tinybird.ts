@@ -24,11 +24,6 @@ export const getTabCounts = tb.buildPipe({
     userEmail: z.string().optional(),
   }),
   data: tabCountDataInterval,
-  opts: {
-    next: {
-      revalidate: 900,
-    },
-  },
 });
 
 export type TabCountDataInterval = z.infer<typeof tabCountDataInterval>;
