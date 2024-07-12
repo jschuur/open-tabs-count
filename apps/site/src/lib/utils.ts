@@ -1,3 +1,4 @@
+import { boolean } from 'boolean';
 import { type ClassValue, clsx } from 'clsx';
 import humanizeDuration from 'humanize-duration';
 import { twMerge } from 'tailwind-merge';
@@ -21,3 +22,12 @@ export const shortEnglishHumanizer = humanizeDuration.humanizer({
     },
   },
 });
+
+export function debug(...args: any[]) {
+  if (
+    process.env.SST_STAGE !== 'production' ||
+    process.env.NEXT_PUBLIC_SST_STAGE !== 'production' ||
+    boolean(process.env.NEXT_PUBLIC_DEBUG)
+  )
+    console.log(...args);
+}

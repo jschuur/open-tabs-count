@@ -3,6 +3,8 @@
 import { Tinybird } from '@chronark/zod-bird';
 import { z } from 'zod';
 
+import { debug } from '@/lib/utils';
+
 const tb = new Tinybird({
   token: process.env.TINYBIRD_TOKEN_DASHBOARD!,
   baseUrl: process.env.TINYBIRD_BASE_URL ?? 'https://api.tinybird.co',
@@ -18,12 +20,20 @@ const tabCountDataInterval = z.object({
   averageCount: z.number(),
 });
 
-export const getTabCounts = tb.buildPipe({
+export const getTabCountsFromApi = tb.buildPipe({
   pipe: 'api_avg_tabcount',
   parameters: z.object({
     userEmail: z.string().optional(),
   }),
   data: tabCountDataInterval,
 });
+
+export async function getTabCounts(userEmail: string) {
+  debug('called getTabCounts');
+
+  const { data: chartData } = await getTabCountsFromApi({ userEmail });
+
+  return { chartData, lastFetchTime: Date.now() };
+}
 
 export type TabCountDataInterval = z.infer<typeof tabCountDataInterval>;

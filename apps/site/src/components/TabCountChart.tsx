@@ -1,6 +1,6 @@
 'use client';
-import pluralize from 'pluralize';
 
+import pluralize from 'pluralize';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,9 +11,10 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
-import { shortEnglishHumanizer } from '@/lib/utils';
+import useTabCountData from '@/hooks/useTabCountData';
 
 import { TabCountDataInterval } from '@/lib/tinybird';
+import { shortEnglishHumanizer } from '@/lib/utils';
 
 const chartConfig = {
   averageCount: {
@@ -23,12 +24,17 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 type Props = {
-  chartData: any;
+  initialChartData: TabCountDataInterval[];
+  initialLastFetchTime: number;
+  userEmail: string;
 };
-export default function TabCountChart({ chartData }: Props) {
-  chartData.forEach((interval: TabCountDataInterval) => {
-    interval.averageCount = Math.round(interval.averageCount);
-  });
+export default function TabCountChart({
+  initialChartData,
+  initialLastFetchTime,
+  userEmail,
+}: Props) {
+  const { chartData } = useTabCountData({ initialChartData, initialLastFetchTime, userEmail });
+
   const currentTabs = chartData[chartData.length - 1];
 
   return (

@@ -2,14 +2,20 @@ import TabCountChart from '@/components/TabCountChart';
 
 import { getTabCounts } from '@/lib/tinybird';
 
-export const revalidate = 900;
+export const revalidate = parseInt(process.env.NEXT_PUBLIC_DATA_STALE_TIME!);
 
 export default async function Home() {
-  const { data: chartData } = await getTabCounts({ userEmail: 'jschuur@jschuur.com' });
+  const userEmail = 'jschuur@jschuur.com';
+  const { chartData: initialChartData } = await getTabCounts(userEmail);
+  const initialLastFetchTime = Date.now();
 
   return (
     <main className='flex h-full items-center justify-center'>
-      <TabCountChart chartData={chartData} />
+      <TabCountChart
+        initialChartData={initialChartData}
+        initialLastFetchTime={initialLastFetchTime}
+        userEmail={userEmail}
+      />
     </main>
   );
 }
