@@ -14,7 +14,7 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: 'How many Chrome tabs does Joost have open right now?',
-  description: 'There&apos;s no such thing as too many tabs, right?',
+  description: "There's no such thing as too many tabs, right?",
 };
 
 export default function RootLayout({
