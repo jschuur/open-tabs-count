@@ -1,0 +1,25 @@
+NODE mv_avg_tabcount_byweekday_recent_0
+SQL >
+
+    SELECT
+        toDayOfWeek(timestamp) AS weekday,
+        userEmail,
+        instanceId,
+        avgState(count) AS averageCount,
+        minState(count) AS minCount,
+        maxState(count) AS maxCount
+    FROM tabcount
+    WHERE timestamp > (now() - toIntervalDay(7))
+    GROUP BY
+        weekday,
+        userEmail,
+        instanceId
+    ORDER BY
+        weekday ASC,
+        userEmail ASC,
+        instanceId ASC
+
+TYPE materialized
+DATASOURCE avg_tabcount_byweekday_recent_mv
+
+

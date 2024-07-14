@@ -1,6 +1,6 @@
 TOKEN "dashboard_api" READ
 
-NODE api_avg_tabcount_0
+NODE api_avg_tabcount_recent_0
 SQL >
 
     %
@@ -10,10 +10,10 @@ SQL >
     {% if defined(userEmail) %}
       userEmail,
     {% end %}
-      avgMerge(averageCount) AS averageCount
-    FROM average_tabcount_15mins_mv
+      ROUND(avgMerge(averageCount)) AS averageCount
+    FROM avg_tabcount_recent_mv
     WHERE
-      intervalStart >= now() - INTERVAL 7 DAY AND intervalStart <= now()
+       TRUE
     {% if defined(userEmail) %}
       AND userEmail={{String(userEmail)}}
     {% end %}

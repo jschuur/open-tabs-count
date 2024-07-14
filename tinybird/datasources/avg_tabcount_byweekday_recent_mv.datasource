@@ -1,0 +1,12 @@
+# Data Source created from Pipe 'mv_avg_tabcount_byweekday_recent'
+
+SCHEMA >
+    `weekday` UInt8,
+    `userEmail` String,
+    `instanceId` String,
+    `averageCount` AggregateFunction(avg, Int16),
+    `minCount` AggregateFunction(min, Int16),
+    `maxCount` AggregateFunction(max, Int16)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "userEmail, weekday, instanceId"

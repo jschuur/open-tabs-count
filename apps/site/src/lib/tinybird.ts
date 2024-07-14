@@ -15,25 +15,73 @@ const dateSchema = z.preprocess((arg) => {
   return arg;
 }, z.number());
 
-const tabCountDataInterval = z.object({
+const tabCountRecentDataInterval = z.object({
   intervalStart: dateSchema,
   averageCount: z.number(),
 });
 
-export const getTabCountsFromApi = tb.buildPipe({
-  pipe: 'api_avg_tabcount',
+const tabCountDailyDataInterval = z.object({
+  intervalStart: dateSchema,
+  averageCount: z.number(),
+  minCount: z.number(),
+  maxCount: z.number(),
+});
+
+export const getRecentTabCountsFromApi = tb.buildPipe({
+  pipe: 'api_avg_tabcount_recent',
   parameters: z.object({
     userEmail: z.string().optional(),
   }),
-  data: tabCountDataInterval,
+  data: tabCountRecentDataInterval,
 });
 
-export async function getTabCounts(userEmail: string) {
-  debug('called getTabCounts');
+export const getDailyTabCountsFromApi = tb.buildPipe({
+  pipe: 'api_avg_tabcount_daily',
+  parameters: z.object({
+    userEmail: z.string().optional(),
+  }),
+  data: tabCountDailyDataInterval,
+});
 
-  const { data: chartData } = await getTabCountsFromApi({ userEmail });
+export async function getRecentTabCounts(userEmail: string) {
+  debug('called getRecentTabCounts');
 
-  return { chartData, lastFetchTime: Date.now() };
+  const { data } = await getRecentTabCountsFromApi({ userEmail });
+
+  return data;
 }
 
-export type TabCountDataInterval = z.infer<typeof tabCountDataInterval>;
+export async function getDailyTabCounts(userEmail: string) {
+  debug('called getDailyTabCounts');
+
+  const { data } = await getDailyTabCountsFromApi({ userEmail });
+
+  return data;
+}
+
+export type TabCountRecentDataInterval = z.infer<typeof tabCountRecentDataInterval>;
+export type TabCountDailyDataInterval = z.infer<typeof tabCountDailyDataInterval>;
+
+const tabCountWeekDayDataInterval = z.object({
+  weekday: z.number().min(1).max(7),
+  averageCount: z.number(),
+  minCount: z.number(),
+  maxCount: z.number(),
+});
+
+const getWeekDayTabCountsFromApi = tb.buildPipe({
+  pipe: 'api_avg_tabcount_byweekday',
+  parameters: z.object({
+    userEmail: z.string().optional(),
+  }),
+  data: tabCountWeekDayDataInterval,
+});
+export async function getWeekDayTabCounts(userEmail: string) {
+  debug('called getWeekDayTabCounts');
+
+  const { data } = await getWeekDayTabCountsFromApi({ userEmail });
+
+  return data;
+}
+
+export type TabCountWeekDayDataInterval = z.infer<typeof tabCountWeekDayDataInterval>;

@@ -1,66 +1,48 @@
 'use client';
 
-import pluralize from 'pluralize';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
-import useTabCountData from '@/hooks/useTabCountData';
+import { cn } from '@/lib/utils';
 
-import { TabCountDataInterval } from '@/lib/tinybird';
-import { shortEnglishHumanizer } from '@/lib/utils';
+import { TabCountRecentDataInterval } from '@/lib/tinybird';
 
 const chartConfig = {
   averageCount: {
-    label: 'Average tabs',
-    color: 'hsl(var(--chart-1))',
+    label: 'Average open tabs',
+    color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig;
 
 type Props = {
-  initialChartData: TabCountDataInterval[];
-  initialLastFetchTime: number;
-  userEmail: string;
+  chartData: TabCountRecentDataInterval[];
+  className?: string;
+  title?: string;
 };
-export default function TabCountChart({
-  initialChartData,
-  initialLastFetchTime,
-  userEmail,
-}: Props) {
-  const { chartData } = useTabCountData({ initialChartData, initialLastFetchTime, userEmail });
-
-  const currentTabs = chartData[chartData.length - 1];
-
+export default function TabCountChart({ chartData, className, title }: Props) {
   return (
-    <Card className='md:w-3/4 mx-4 mt-4'>
+    <Card className={cn(className)}>
       <CardHeader>
-        <div className='flex justify-between items-start gap-16'>
-          <CardTitle className='leading-8 font-medium text-lg md:text-2xl text-balance'>
-            How many Chrome tabs does Joost have open right now?
+        {title && (
+          <CardTitle className='leading-8 font-semibold text-xl md:text-2xl text-balance'>
+            {title}
           </CardTitle>
-          <div className='px-4 py-2 text-lg md:text-2xl font-medium whitespace-nowrap bg-green-100 rounded border border-green-200'>
-            <div>{pluralize('tab', currentTabs.averageCount, true)}</div>
-            <div className='text-muted-foreground text-sm whitespace-nowrap'>
-              {shortEnglishHumanizer(new Date().getTime() - currentTabs.intervalStart, {
-                units: ['d', 'h', 'm'],
-                conjunction: ' and ',
-                round: true,
-                largest: 2,
-              })}{' '}
-              ago
-            </div>
-          </div>
-        </div>
+        )}
       </CardHeader>
       <CardContent>
-        <ChartContainer className='max-h-80 w-full' config={chartConfig}>
+        <ChartContainer className='' config={chartConfig}>
           <AreaChart accessibilityLayer data={chartData}>
+            <ChartLegend verticalAlign='bottom' align='right' content={<ChartLegendContent />} />
+
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey='intervalStart'
@@ -73,7 +55,7 @@ export default function TabCountChart({
               content={
                 <ChartTooltipContent
                   indicator='line'
-                  className='w-[160x]'
+                  className='w-[180px]'
                   nameKey='averageCount'
                   labelFormatter={(label, payload) => {
                     return new Date(payload[0].payload.intervalStart).toLocaleString('en-US', {
@@ -99,26 +81,6 @@ export default function TabCountChart({
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className='text-muted-foreground'>
-        <p>
-          An experiment with{' '}
-          <a className='text-link' href='https://tinybird.co'>
-            Tinybird
-          </a>{' '}
-          and{' '}
-          <a className='text-link' href='https://ui.shadcn.com/charts'>
-            shadcn/ui charts
-          </a>
-          . Useful:{' '}
-          <a
-            className='text-link'
-            href='https://chromewebstore.google.com/detail/the-marvellous-suspender/noogafoofpebimajpfpamcfhoaifemoa?hl=en'
-          >
-            The Marvelous Suspender
-          </a>
-          .
-        </p>
-      </CardFooter>
     </Card>
   );
 }

@@ -1,0 +1,30 @@
+TOKEN "dashboard_api" READ
+
+TOKEN "api_avg_tabcount_byweekday_endpoint_read_0216" READ
+
+NODE api_avg_tabcount_byweekday_0
+SQL >
+
+    %
+
+    SELECT 
+      weekday,
+    {% if defined(userEmail) %}
+      userEmail,
+    {% end %}
+      ROUND(avgMerge(averageCount)) AS averageCount,
+      ROUND(minMerge(minCount)) AS minCount,
+      ROUND(maxMerge(maxCount)) AS maxCount
+    FROM avg_tabcount_byweekday_recent_mv
+    WHERE
+       TRUE
+    {% if defined(userEmail) %}
+      AND userEmail={{String(userEmail)}}
+    {% end %}
+    GROUP BY weekday
+    {% if defined(userEmail) %}
+      , userEmail
+    {% end %}
+    ORDER BY weekday
+
+

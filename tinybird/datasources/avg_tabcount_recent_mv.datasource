@@ -1,4 +1,4 @@
-# Data Source created from Pipe 'mv_average_tabcount_15mins'
+# Data Source created from Pipe 'mv_avg_tabcount_recent'
 
 SCHEMA >
     `intervalStart` DateTime,
@@ -8,4 +8,5 @@ SCHEMA >
 
 ENGINE "AggregatingMergeTree"
 ENGINE_PARTITION_KEY "toYYYYMM(intervalStart)"
-ENGINE_SORTING_KEY "intervalStart, userEmail, instanceId"
+ENGINE_SORTING_KEY "userEmail, intervalStart, instanceId"
+ENGINE_TTL "intervalStart + toIntervalDay(7)"

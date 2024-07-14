@@ -1,0 +1,12 @@
+# Data Source created from Pipe 'mv_avg_tabcount_test'
+
+SCHEMA >
+    `intervalStart` DateTime,
+    `userEmail` String,
+    `instanceId` String,
+    `averageCount` AggregateFunction(avg, Int16)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(intervalStart)"
+ENGINE_SORTING_KEY "userEmail, intervalStart, instanceId"
+ENGINE_TTL "intervalStart + toIntervalHour(1)"

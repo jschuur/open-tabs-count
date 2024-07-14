@@ -1,0 +1,24 @@
+NODE mv_avg_tabcount_daily_0
+SQL >
+
+    SELECT
+        toStartOfDay(timestamp) AS intervalStart,
+        userEmail,
+        instanceId,
+        avgState(count) AS averageCount,
+        minState(count) AS minCount,
+        maxState(count) AS maxCount
+    FROM tabcount
+    GROUP BY
+        intervalStart,
+        userEmail,
+        instanceId
+    ORDER BY
+        intervalStart ASC,
+        userEmail ASC,
+        instanceId ASC
+
+TYPE materialized
+DATASOURCE avg_tabcount_daily_mv
+
+

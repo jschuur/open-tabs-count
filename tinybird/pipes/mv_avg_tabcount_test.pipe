@@ -1,4 +1,4 @@
-NODE mv_average_tabcount_15mins_0
+NODE mv_avg_tabcount_test_0
 SQL >
 
     SELECT
@@ -7,6 +7,7 @@ SQL >
         instanceId,
         avgState(count) AS averageCount
     FROM tabcount
+    WHERE timestamp > (now() - toIntervalHour(1))
     GROUP BY
         intervalStart,
         userEmail,
@@ -17,6 +18,6 @@ SQL >
         instanceId ASC
 
 TYPE materialized
-DATASOURCE average_tabcount_15mins_mv
+DATASOURCE avg_tabcount_test_mv
 
 
