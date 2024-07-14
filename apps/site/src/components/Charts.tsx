@@ -29,7 +29,7 @@ export default function Charts({
   });
 
   return (
-    <div className='flex flex-col gap-4 mx-6 lg:mx-16 mt-6 w-full'>
+    <div className='flex flex-col gap-4 mx-2 xs:mx-6 lg:mx-16 mt-6 w-full'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
         <About className='w-full' />
         <Metrics chartData={chartData} className='w-full' />

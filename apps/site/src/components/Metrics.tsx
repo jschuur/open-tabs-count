@@ -16,11 +16,9 @@ type MetricProps = {
 };
 function Metric({ metric, title, footer, className }: MetricProps) {
   return (
-    <div
-      className={cn('flex-1 min-w-0 flex flex-col w-full px-4 py-2 whitespace-nowrap', className)}
-    >
+    <div className={cn('flex-1 min-w-0 flex flex-col w-full whitespace-nowrap', className)}>
       <div className='text-sm md:text-base font-bold'>{title}</div>
-      <div className='text-lg md:text-xl font-light'>{metric}</div>
+      <div className='text-base xs:text-lg md:text-xl font-light'>{metric}</div>
       <div className='text-muted-foreground text-xs whitespace-nowrap'>{footer}</div>
     </div>
   );
