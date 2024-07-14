@@ -11,15 +11,20 @@ export default $config({
     };
   },
   async run() {
+    const tinybirdTokenDashboard = new sst.Secret('TinybirdTokenDashboard');
+    const tinybirdBaseUrl = new sst.Secret('TinybirdBaseUrl');
+    const dataStaleTime = new sst.Secret('DataStaleTime', '900');
+    const debugOutput = new sst.Secret('DebugOutput', 'false');
+
     const config: sst.aws.NextjsArgs = {
+      link: [tinybirdTokenDashboard, tinybirdBaseUrl, dataStaleTime, debugOutput],
       environment: {
         SST_STAGE: $app.stage,
         NEXT_PUBLIC_SST_STAGE: $app.stage,
-        TINYBIRD_TOKEN_DASHBOARD: process.env.TINYBIRD_TOKEN_DASHBOARD ?? '',
-        TINYBIRD_BASE_URL: process.env.TINYBIRD_BASE_URL ?? '',
-        NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV ?? 'production',
-        NEXT_PUBLIC_DATA_STALE_TIME: process.env.NEXT_PUBLIC_DATA_STALE_TIME || '900',
-        NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG || 'false',
+        TINYBIRD_TOKEN_DASHBOARD: tinybirdTokenDashboard.value,
+        TINYBIRD_BASE_URL: tinybirdBaseUrl.value,
+        NEXT_PUBLIC_DATA_STALE_TIME: dataStaleTime.value,
+        NEXT_PUBLIC_DEBUG: debugOutput.value,
       },
     };
 
