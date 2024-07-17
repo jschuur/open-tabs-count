@@ -1,4 +1,4 @@
-import Charts from '@/components/Charts';
+import HomePage from '@/components/HomePage';
 
 import { getRecentTabCounts, getWeekDayTabCounts } from '@/lib/tinybird';
 
@@ -11,8 +11,8 @@ export default async function Home() {
   const initialLastFetchTime = Date.now();
 
   return (
-    <main className='flex h-full items-center justify-center'>
-      <Charts
+    <main className=''>
+      <HomePage
         initialChartData={initialChartData}
         initialChartDataByWeekDay={initialChartDataByWeekDay}
         initialLastFetchTime={initialLastFetchTime}

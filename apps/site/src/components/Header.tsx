@@ -7,12 +7,12 @@ import { cn } from '@/lib/utils';
 type Props = {
   className?: string;
 };
-export default function About({ className }: Props) {
+export default function Header({ className }: Props) {
   return (
     <Card className={cn(className)}>
       <CardHeader>
-        <CardTitle className='text-center md:text-start leading-8 font-bold text-3xl text-balance'>
-          Joost&apos;s Tab Count History
+        <CardTitle className='text-center lg:text-start leading-8 font-bold text-3xl text-balance'>
+          How Many Browser Tabs Does Joost Have Open Right Now?
         </CardTitle>
       </CardHeader>
       <CardContent className='text-muted-foreground'>

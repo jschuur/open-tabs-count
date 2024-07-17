@@ -30,7 +30,7 @@ type Props = {
 };
 export default function TabCountChart({ chartData, className, title }: Props) {
   return (
-    <Card className={cn(className)}>
+    <Card className={cn('', className)}>
       <CardHeader>
         {title && (
           <CardTitle className='leading-8 font-semibold text-xl md:text-2xl text-balance'>
@@ -39,8 +39,8 @@ export default function TabCountChart({ chartData, className, title }: Props) {
         )}
       </CardHeader>
       <CardContent>
-        <ChartContainer className='' config={chartConfig}>
-          <AreaChart accessibilityLayer data={chartData}>
+        <ChartContainer className='h-72 aspect-auto' config={chartConfig}>
+          <AreaChart accessibilityLayer data={chartData} className=''>
             <ChartLegend verticalAlign='bottom' align='right' content={<ChartLegendContent />} />
 
             <CartesianGrid vertical={false} />

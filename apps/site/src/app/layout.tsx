@@ -3,8 +3,6 @@ import { Inter as FontSans } from 'next/font/google';
 
 import './globals.css';
 
-import Footer from '@/components/Footer';
-
 import { cn } from '@/lib/utils';
 
 const fontSans = FontSans({
@@ -26,12 +24,11 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'flex flex-col h-screen bg-background font-sans antialiased',
+          'flex flex-col min-h-screen bg-background font-sans antialiased items-center justify-center',
           fontSans.variable
         )}
       >
-        <main className='grow'>{children}</main>
-        <Footer />
+        <div className='max-w-5xl mx-auto w-full'>{children}</div>
       </body>
     </html>
   );

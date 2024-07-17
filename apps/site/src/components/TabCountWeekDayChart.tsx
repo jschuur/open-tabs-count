@@ -40,7 +40,7 @@ type Props = {
 };
 export default function TabCountWeekDayChart({ chartData, className, title }: Props) {
   return (
-    <Card className={cn(className)}>
+    <Card className={cn('', className)}>
       <CardHeader>
         {title && (
           <CardTitle className='leading-8 font-semibold text-xl md:text-2xl text-balance'>
@@ -48,8 +48,8 @@ export default function TabCountWeekDayChart({ chartData, className, title }: Pr
           </CardTitle>
         )}
       </CardHeader>
-      <CardContent className=''>
-        <ChartContainer config={chartConfig} className=''>
+      <CardContent>
+        <ChartContainer config={chartConfig} className='h-72 aspect-auto'>
           <BarChart accessibilityLayer data={chartData} className=''>
             <ChartLegend verticalAlign='bottom' content={<ChartLegendContent />} />
             <CartesianGrid vertical={false} />
