@@ -1,13 +1,14 @@
 'use server';
 
 import { Tinybird } from '@chronark/zod-bird';
+import { Resource } from 'sst';
 import { z } from 'zod';
 
 import { debug } from '@/lib/utils';
 
 const tb = new Tinybird({
-  token: process.env.TINYBIRD_TOKEN_DASHBOARD!,
-  baseUrl: process.env.TINYBIRD_BASE_URL ?? 'https://api.tinybird.co',
+  token: Resource.Config.tinybirdTokenDashboard,
+  baseUrl: Resource.Config.tinybirdBaseUrl,
 });
 
 const dateSchema = z.preprocess((arg) => {
