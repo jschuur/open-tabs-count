@@ -34,7 +34,7 @@ const buildOptions = {
   format: 'esm',
   sourcemap: process.env.NODE_ENV !== 'production',
   define: {
-    'process.env.NODE_ENV': defineEnv(process.env.NODE_ENV),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'development'),
     'process.env.TINYBIRD_TOKEN': defineEnv(process.env.TINYBIRD_TOKEN),
     'process.env.TINYBIRD_BASE_URL': defineEnv(process.env.TINYBIRD_BASE_URL),
     'process.env.SITE_URL': defineEnv(process.env.SITE_URL),
