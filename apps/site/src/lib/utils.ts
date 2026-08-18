@@ -24,9 +24,10 @@ export const shortEnglishHumanizer = humanizeDuration.humanizer({
 });
 
 export function debug(...args: any[]) {
+  const stage = process.env.NEXT_PUBLIC_SST_STAGE ?? process.env.SST_STAGE;
+
   if (
-    process.env.SST_STAGE !== 'production' ||
-    process.env.NEXT_PUBLIC_SST_STAGE !== 'production' ||
+    stage !== 'production' ||
     boolean(process.env.NEXT_PUBLIC_DEBUG)
   )
     console.log(...args);
