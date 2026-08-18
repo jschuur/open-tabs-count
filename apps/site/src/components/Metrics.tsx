@@ -27,7 +27,23 @@ type Props = {
   className?: string;
 };
 export default function Metrics({ chartData, className }: Props) {
-  const currentTabs = chartData[chartData.length - 1];
+  const currentTabs = chartData.at(-1);
+
+  if (!currentTabs) {
+    return (
+      <div
+        className={cn(
+          'flex flex-wrap lg:flex-nowrap flex-row lg:flex-col gap-4 justify-around lg:justify-normal',
+          className
+        )}
+      >
+        <Metric metric='No data yet' title='Currently' footer='waiting for first tab count event' />
+        <Metric metric='No data yet' title='Average' footer='last 7 days' />
+        <Metric metric='No data yet' title='Range' />
+      </div>
+    );
+  }
+
   const averageCount = Math.round(mean(chartData.map((data) => data.averageCount)));
   const minTabs = Math.min(...chartData.map((data) => data.averageCount));
   const maxTabs = Math.max(...chartData.map((data) => data.averageCount));

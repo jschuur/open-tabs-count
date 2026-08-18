@@ -12,6 +12,7 @@ const watchMode = Boolean(process.argv.includes('--watch'));
 
 const publicDir = 'public';
 const distDir = 'dist';
+const defineEnv = (value) => (value === undefined ? 'undefined' : JSON.stringify(value));
 
 const publicFiles = glob.sync('public/**/*.{html,json}', { nodir: true });
 const mappedPublicFiles = new Map(publicFiles.map((path) => [parse(path).name, path]));
@@ -33,10 +34,10 @@ const buildOptions = {
   format: 'esm',
   sourcemap: process.env.NODE_ENV !== 'production',
   define: {
-    'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
-    'process.env.TINYBIRD_TOKEN': `"${process.env.TINYBIRD_TOKEN}"`,
-    'process.env.TINYBIRD_BASE_URL': `"${process.env.TINYBIRD_BASE_URL}"`,
-    'process.env.SITE_URL': `"${process.env.SITE_URL}"`,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'development'),
+    'process.env.TINYBIRD_TOKEN': defineEnv(process.env.TINYBIRD_TOKEN),
+    'process.env.TINYBIRD_BASE_URL': defineEnv(process.env.TINYBIRD_BASE_URL),
+    'process.env.SITE_URL': defineEnv(process.env.SITE_URL),
   },
   alias: {
     '@': './src',

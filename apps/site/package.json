@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@chronark/zod-bird": "^0.3.9",
+    "@t3-oss/env-nextjs": "^0.13.11",
     "@tabler/icons-react": "^3.11.0",
     "boolean": "^3.2.0",
     "class-variance-authority": "^0.7.0",
@@ -29,7 +30,7 @@
     "sst": "^0.1.28",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/humanize-duration": "^3.27.4",

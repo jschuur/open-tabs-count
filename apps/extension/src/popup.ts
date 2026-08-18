@@ -1,5 +1,6 @@
 import pluralize from 'pluralize';
 
+import { env } from '@/env';
 import { getOpenTabs, getOpenWindows } from '@/lib/lib';
 
 (async () => {
@@ -20,6 +21,6 @@ import { getOpenTabs, getOpenWindows } from '@/lib/lib';
   if (siteDiv) {
     const anchor = siteDiv.querySelector('a');
 
-    if (anchor && process.env.SITE_URL) anchor.href = process.env.SITE_URL;
+    if (anchor && env.SITE_URL) anchor.href = env.SITE_URL;
   }
 })();

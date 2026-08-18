@@ -1,6 +1,30 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+import { createEnv } from '@t3-oss/env-nextjs';
 import pc from 'picocolors';
+import { z } from 'zod';
+
+const env = createEnv({
+  server: {
+    TINYBIRD_TOKEN_DASHBOARD: z.string().min(1),
+    TINYBIRD_BASE_URL: z.string().url().default('https://api.tinybird.co'),
+    NEXT_PUBLIC_DATA_STALE_TIME: z.coerce.number().int().positive().default(900),
+    NEXT_PUBLIC_DEBUG: z.enum(['true', 'false']).default('false'),
+    CACHE_POLICY: z.string().optional(),
+    SITE_HOSTNAME: z.string().optional(),
+    USER_EMAIL: z.string().email().optional(),
+  },
+  runtimeEnv: {
+    TINYBIRD_TOKEN_DASHBOARD: process.env.TINYBIRD_TOKEN_DASHBOARD,
+    TINYBIRD_BASE_URL: process.env.TINYBIRD_BASE_URL,
+    NEXT_PUBLIC_DATA_STALE_TIME: process.env.NEXT_PUBLIC_DATA_STALE_TIME,
+    NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG,
+    CACHE_POLICY: process.env.CACHE_POLICY,
+    SITE_HOSTNAME: process.env.SITE_HOSTNAME,
+    USER_EMAIL: process.env.USER_EMAIL,
+  },
+  emptyStringAsUndefined: true,
+});
 
 export default $config({
   app(input) {
@@ -14,20 +38,20 @@ export default $config({
     const secrets = {
       tinybirdTokenDashboard: new sst.Secret(
         'TinybirdTokenDashboard',
-        process.env.TINYBIRD_TOKEN_DASHBOARD
+        env.TINYBIRD_TOKEN_DASHBOARD
       ).value,
       tinybirdBaseUrl: new sst.Secret(
         'TinybirdBaseUrl',
-        process.env.TINYBIRD_BASE_URL || 'https://api.tinybird.co'
+        env.TINYBIRD_BASE_URL
       ).value,
       dataStaleTime: new sst.Secret(
         'DataStaleTime',
-        process.env.NEXT_PUBLIC_DATA_STALE_TIME || '900'
+        String(env.NEXT_PUBLIC_DATA_STALE_TIME)
       ).value,
-      debugOutput: new sst.Secret('DebugOutput', process.env.NEXT_PUBLIC_DEBUG || 'false').value,
-      cachePolicy: new sst.Secret('CachePolicy', process.env.CACHE_POLICY || '').value,
-      siteHostName: new sst.Secret('SiteHostName', process.env.SITE_HOSTNAME || '').value,
-      userEmail: new sst.Secret('UserEmail', process.env.USER_EMAIL || '').value,
+      debugOutput: new sst.Secret('DebugOutput', env.NEXT_PUBLIC_DEBUG).value,
+      cachePolicy: new sst.Secret('CachePolicy', env.CACHE_POLICY ?? '').value,
+      siteHostName: new sst.Secret('SiteHostName', env.SITE_HOSTNAME ?? '').value,
+      userEmail: new sst.Secret('UserEmail', env.USER_EMAIL ?? '').value,
     };
 
     const appConfig = new sst.Linkable('Config', {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { env } from '@/env';
 import { getRecentTabCounts, getWeekDayTabCounts } from '@/lib/tinybird';
 import { debug } from '@/lib/utils';
 
@@ -25,10 +26,7 @@ export default function useTabCountData({
   useEffect(() => {
     const currentTime = new Date().getTime();
 
-    if (
-      currentTime - initialLastFetchTime >
-      parseInt(process.env.NEXT_PUBLIC_DATA_STALE_TIME!, 10) * 1000
-    ) {
+    if (currentTime - initialLastFetchTime > env.NEXT_PUBLIC_DATA_STALE_TIME * 1000) {
       debug('Revalidating stale tab count data');
 
       getRecentTabCounts(userEmail)

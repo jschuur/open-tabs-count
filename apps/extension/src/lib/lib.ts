@@ -55,7 +55,7 @@ export async function updateTabCount(trigger: UpdateTrigger) {
     chrome.action.setBadgeTextColor({ color: '#fff' });
     chrome.action.setBadgeBackgroundColor({ color: getBadgeColor(tabCount) });
     chrome.action.setTitle({
-      title: `You have ${pluralize('tab', tabCount, true)} tabs open in ${pluralize(
+      title: `You have ${pluralize('tab', tabCount, true)} open in ${pluralize(
         'window',
         windowCount,
         true
