@@ -3,6 +3,8 @@ import { type ClassValue, clsx } from 'clsx';
 import humanizeDuration from 'humanize-duration';
 import { twMerge } from 'tailwind-merge';
 
+import { env } from '@/env';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -24,11 +26,8 @@ export const shortEnglishHumanizer = humanizeDuration.humanizer({
 });
 
 export function debug(...args: any[]) {
-  const stage = process.env.NEXT_PUBLIC_SST_STAGE ?? process.env.SST_STAGE;
+  const stage = env.NEXT_PUBLIC_SST_STAGE;
 
-  if (
-    stage !== 'production' ||
-    boolean(process.env.NEXT_PUBLIC_DEBUG)
-  )
+  if (stage !== 'production' || boolean(env.NEXT_PUBLIC_DEBUG))
     console.log(...args);
 }

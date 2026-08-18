@@ -2,11 +2,12 @@ import { Tinybird } from '@chronark/zod-bird';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
+import { env } from '@/env';
 import { updateTriggers } from '@/types';
 
 const tb = new Tinybird({
-  token: process.env.TINYBIRD_TOKEN!,
-  baseUrl: process.env.TINYBIRD_BASE_URL ?? 'https://api.tinybird.co',
+  token: env.TINYBIRD_TOKEN,
+  baseUrl: env.TINYBIRD_BASE_URL,
 });
 
 export const addTabCount = tb.buildIngestEndpoint({

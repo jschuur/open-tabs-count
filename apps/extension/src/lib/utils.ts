@@ -1,3 +1,5 @@
+import { env } from '@/env';
+
 export function debug(...args: any[]) {
-  if (process.env.NODE_ENV === 'development') console.log(...args);
+  if (env.NODE_ENV === 'development') console.log(...args);
 }
