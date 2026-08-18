@@ -1,0 +1,17 @@
+{
+  "name": "open-tabs-count",
+  "install": "pnpm install --frozen-lockfile",
+  "terminals": [
+    {
+      "name": "site-dev",
+      "command": "./.cursor/run-site-dev.sh",
+      "description": "Next.js dev server for apps/site on http://localhost:3000. Runs `next dev` directly (the committed `pnpm dev` uses `sst dev`, which needs AWS). Renders live Tinybird charts when the TINYBIRD_TOKEN_DASHBOARD and USER_EMAIL secrets are set, otherwise the app's built-in 'User email not set' state."
+    }
+  ],
+  "ports": [
+    {
+      "name": "site",
+      "port": 3000
+    }
+  ]
+}
